@@ -2,7 +2,7 @@
 
 namespace App\Livewire;
 
-use App\Models\exam;
+use App\Models\Exam;
 use Livewire\Component;
 
 class Home extends Component
@@ -10,7 +10,7 @@ class Home extends Component
     public $exams;
     public function mount()
     {
-        $this->exams = exam::all();
+        $this->exams = Exam::all();
     }
     public function render()
     {

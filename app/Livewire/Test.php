@@ -4,7 +4,7 @@ namespace App\Livewire;
 
 use Livewire\Component;
 use Illuminate\Support\Facades\Storage;
-use App\Models\exam;
+use App\Models\Exam;
 
 class Test extends Component
 {
@@ -13,9 +13,9 @@ class Test extends Component
     public $questions ;
     public $userAnswer = [];
     public $number = 0;
-    public function mount(exam $exam)
+    public function mount(Exam $Exam)
     {
-        $file = Storage::path($exam->file);
+        $file = Storage::path($Exam->file);
         $xml = simplexml_load_file($file);
             $y = 0;
         // foreach ($xml->children() as $child) {
@@ -32,7 +32,7 @@ class Test extends Component
         // }
 
 
-            if (session('exam')!=$exam->id|| session('qus')==null || !session('qus')){
+            if (session('Exam')!=$Exam->id|| session('qus')==null || !session('qus')){
                 foreach ($xml->children() as $child) {
             $this->questions[$y]['text'] = $child->text->__tostring();
             $options = [];
@@ -65,7 +65,7 @@ class Test extends Component
             $y++;
         }
             session(['qus' => $this->questions]);
-            session(['exam' => $exam->id]);
+            session(['Exam' => $Exam->id]);
 
             session()->forget('userAnswer');
             session()->forget('number');
@@ -121,17 +121,17 @@ class Test extends Component
         session()->forget('userAnswer');
         session()->forget('number');
         session()->forget('qus');
-        session()->forget('exam');
+        session()->forget('Exam');
 
     }
 
     public function save()
     {
-        $exam = exam::find(session('exam'));
-        if ($exam->answers()->where('user_id', auth()->id())->exists()){
-            $exam->answers()->where('user_id', auth()->id())->delete();
+        $Exam = Exam::find(session('Exam'));
+        if ($Exam->answers()->where('user_id', auth()->id())->exists()){
+            $Exam->answers()->where('user_id', auth()->id())->delete();
         }
-        $exam->answers()->createMany(array_map(function ($answer, $question_id) {
+        $Exam->answers()->createMany(array_map(function ($answer, $question_id) {
             return [
                 'question_id' => $question_id,
                 'answer' => $answer,

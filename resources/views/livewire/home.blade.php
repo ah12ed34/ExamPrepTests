@@ -4,23 +4,23 @@
         <div class="row">
             <a class="btn btn-primary" href="{{ route('new-test') }}">Create Exam</a>
 
-                    @forelse ($exams as $exam)
+                    @forelse ($Exams as $Exam)
                     <div class="card">
                         <div class="card-body">
                             <!-- Card content -->
-                            <h5 class="card-title">{{ $exam->name }}</h5>
-                            <p class="card-text">{{ $exam->user->name }}</p>
+                            <h5 class="card-title">{{ $Exam->name }}</h5>
+                            <p class="card-text">{{ $Exam->user->name }}</p>
 
-                            <a href="{{ route('test', $exam->id) }}" class="btn btn-primary">Start Test</a>
-                            @if ($exam->isExam())
-                            <a  class="btn btn-primary" href="{{ route('result',$exam->id) }}" >Show Result</a>
+                            <a href="{{ route('test', $Exam->id) }}" class="btn btn-primary">Start Test</a>
+                            @if ($Exam->isExam())
+                            <a  class="btn btn-primary" href="{{ route('result',$Exam->id) }}" >Show Result</a>
                             @endif
                         </div>
                     </div>
 
                     @empty
 
-                    <p>No exams</p>
+                    <p>No Exams</p>
                     @endforelse
                     {{-- <div class="card">
                         <div class="card-body">

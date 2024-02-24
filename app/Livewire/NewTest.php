@@ -23,7 +23,7 @@ class NewTest extends Component
 
 
         // if ($this->file) {
-        //     $this->file = $this->file->store('exams');
+        //     $this->file = $this->file->store('Exams');
         // }
         $file   =  $this->file->store('public/test');
 
@@ -49,7 +49,7 @@ class NewTest extends Component
             }
 
             if ($boo) {
-            $exam = \App\Models\exam::create([
+            $Exam = \App\Models\Exam::create([
                 'name' => $this->name,
                 'file' => $this->file,
                 'user_id' => auth()->id()
@@ -62,11 +62,11 @@ class NewTest extends Component
         }
 
     }
-        // $exam = new \App\Models\exam;
-        // $exam->name = $this->name;
-        // $exam->file = $this->file;
-        // $exam->user_id = auth()->id();
-        // $exam->save();
+        // $Exam = new \App\Models\Exam;
+        // $Exam->name = $this->name;
+        // $Exam->file = $this->file;
+        // $Exam->user_id = auth()->id();
+        // $Exam->save();
         // return redirect()->route('home');
     }
     public function render()

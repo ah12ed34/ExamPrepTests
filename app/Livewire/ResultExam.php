@@ -2,14 +2,14 @@
 
 namespace App\Livewire;
 
-use App\Models\exam;
+use App\Models\Exam;
 use Livewire\Component;
 use Illuminate\Support\Facades\Storage;
 use Psy\Command\HistoryCommand;
 
 class ResultExam extends Component
 {
-    public $exam;
+    public $Exam;
     public $questions;
     public $question;
     public $number = 0;
@@ -18,26 +18,26 @@ class ResultExam extends Component
     public $total = 0;
 
 
-    public function mount(exam $exam)
+    public function mount(Exam $Exam)
     {
-        if (!$exam->isExam()) {
-            return abort(404, 'This exam is not found');
+        if (!$Exam->isExam()) {
+            return abort(404, 'This Exam is not found');
 
         }
-        if(session('resultId')==$exam->id){
+        if(session('resultId')==$Exam->id){
             $this->number = session('resultNumber', 0);
 
         }else{
-           session(['resultId'=>$exam->id,'resultNumber'=>0]);
+           session(['resultId'=>$Exam->id,'resultNumber'=>0]);
         }
-        $this->exam = $exam;
+        $this->Exam = $Exam;
 
 
-        // $this->questions = $exam->answers->mapWithKeys(function ($item) {
+        // $this->questions = $Exam->answers->mapWithKeys(function ($item) {
         //     return [$item->question_id => $item->answer];
         // });
 
-        $file = Storage::path($exam->file);
+        $file = Storage::path($Exam->file);
         $xml = simplexml_load_file($file);
         $y = 0;
         $currect = 0;
@@ -54,7 +54,7 @@ class ResultExam extends Component
             }
             $this->questions[$y]['options'] = $options;
             $this->questions[$y]['answer'] = $child->answer->__tostring();
-            $this->questions[$y]['userAnswer'] = $exam->answers->where('question_id', $y)->first()->answer;
+            $this->questions[$y]['userAnswer'] = $Exam->answers->where('question_id', $y)->first()->answer;
             $this->questions[$y]['correct'] = $this->questions[$y]['answer'] == $this->questions[$y]['userAnswer'];
             if ($this->questions[$y]['correct']) {
                 $currect++;
@@ -72,7 +72,7 @@ class ResultExam extends Component
         $number =  request('q') != null ? request('q')-1 : $this->number;
         // dd($number);
         if ($number < 0 || $number >= $this->total) {
-            return redirect()->route('result',[$exam,'q'=>1],);
+            return redirect()->route('result',[$Exam,'q'=>1],);
         }else{
             $this->number = $number;
         }
@@ -86,7 +86,7 @@ class ResultExam extends Component
         }$this->number++;
         $this->question = $this->questions[$this->number];
         session(['resultNumber' => $this->number]);
-        // $this->redirect(route('result', [$this->exam->id,'q' => $this->number + 1]));
+        // $this->redirect(route('result', [$this->Exam->id,'q' => $this->number + 1]));
 
     }
 
@@ -103,6 +103,6 @@ class ResultExam extends Component
     public function render()
     {
 
-        return optional(view('livewire.result-exam'))->layout('components.layouts.app');
+        return optional(view('livewire.result-Exam'))->layout('components.layouts.app');
     }
 }
