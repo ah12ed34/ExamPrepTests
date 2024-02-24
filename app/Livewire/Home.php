@@ -7,10 +7,10 @@ use Livewire\Component;
 
 class Home extends Component
 {
-    public $exams;
+    public $Exams;
     public function mount()
     {
-        $this->exams = Exam::all();
+        $this->Exams = Exam::all();
     }
     public function render()
     {
