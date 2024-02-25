@@ -16,9 +16,9 @@ class Exam extends Model
     }
     public function answers()
     {
-        return $this->hasMany(Answer::class, 'Exam_id', 'id')->where('user_id', auth()->id());
+        return $this->hasMany(Answer::class, 'exam_id', 'id')->where('user_id', auth()->id());
     }
     public function isExam() : bool{
-        return $this->answers->where('user_id', auth()->id())->count() > 0;
+        return $this->answers->count() > 0;
     }
 }
