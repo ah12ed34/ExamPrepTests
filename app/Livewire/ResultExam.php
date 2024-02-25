@@ -103,6 +103,6 @@ class ResultExam extends Component
     public function render()
     {
 
-        return optional(view('livewire.result-Exam'))->layout('components.layouts.app');
+        return optional(view('livewire.result-exam'))->layout('components.layouts.app');
     }
 }
