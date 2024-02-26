@@ -107,9 +107,11 @@ class ResultExam extends Component
         do {
             $next++;
             if ($next >= count($this->questions)) {
-                if($this->wrong==1)
-                return;
+                if ($this->wrong == 1&&!$this->questions[$next]['correct']) {
+                    return;
+                }
                 $next = 0;
+
             }
         } while ($this->questions[$next]['correct']);
         $this->goTo($next);
