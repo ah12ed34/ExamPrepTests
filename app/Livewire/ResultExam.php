@@ -82,12 +82,37 @@ class ResultExam extends Component
     {
 
         if ($this->number >= count($this->questions) -1) {
-            return;
+            return redirect()->route('home');
         }$this->number++;
         $this->question = $this->questions[$this->number];
         session(['resultNumber' => $this->number]);
         // $this->redirect(route('result', [$this->Exam->id,'q' => $this->number + 1]));
 
+    }
+    public function goTo($number)
+    {
+        if ($number < 0 || $number >= $this->total) {
+            return;
+        }$this->number = $number;
+        $this->question = $this->questions[$this->number];
+        session(['resultNumber' => $this->number]);
+    }
+
+    public function nextError()
+    {
+        if($this->wrong==0){
+            return;
+        }
+        $next = $this->number;
+        do {
+            $next++;
+            if ($next >= count($this->questions)) {
+                if($this->wrong==1)
+                return;
+                $next = 0;
+            }
+        } while ($this->questions[$next]['correct']);
+        $this->goTo($next);
     }
 
     public function prev()

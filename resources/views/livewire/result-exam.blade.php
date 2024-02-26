@@ -77,6 +77,9 @@
                     @endif >إعادة</button>
                     {{-- <button class="btn btn-primary" wire:click='submit' id="submitBtn">تسليم</button> --}}
                     {{-- <button class="btn btn-primary" wire:click='save' id="submitBtn" @if (count($userAnswer) != count($questions) ) disabled @endif>تسليم</button> --}}
+                    @if ($wrong > 0)
+                        <button class="btn btn-primary" wire:click='nextError' id="nextBtn" >الخطا التالي</button>
+                    @endif
                     <button class="btn btn-primary" wire:click='next' id="nextBtn" @if ($number == count($questions) -1 ) disabled @endif>التالي</button>
                 </div>
         </div>
