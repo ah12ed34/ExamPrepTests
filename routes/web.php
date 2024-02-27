@@ -28,4 +28,5 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/test/{Exam}', App\Livewire\Test::class)->name('test');
     Route::get('/new-test', App\Livewire\NewTest::class)->name('new-test');
     Route::get('/result/{Exam}', App\Livewire\ResultExam::class)->name('result');
+    Route::get('/correct-answers/{Exam}', App\Livewire\CorrectAnswers::class)->name('correct-answers');
 });
