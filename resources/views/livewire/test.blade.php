@@ -71,6 +71,14 @@
         </form>
             <div class="text-center mt-5">
                 <button class="btn btn-primary" @if ($number == 0) disabled @endif wire:click='prev' id="prevBtn">السابق</button>
+                {{-- @if(count($userAnswer) < $number )
+                    @dump($number-count($userAnswer))
+                    @if($number-count($userAnswer) == 1 && isset($userAnswer[$number]))
+                        <button class="btn btn-primary" @if ($number == 0) disabled @endif wire:click='prevNotAnswered' id="prevBtn">السابق</button>
+                    @elseif ($number-count($userAnswer) > 1)
+                        <button class="btn btn-primary" @if ($number == 0) disabled @endif wire:click='prevNotAnswered' id="prevBtn">السابق</button>
+                    @endif
+                @endif --}}
                 <button class="btn btn-primary" wire:click='res' id="resetBtn" @if (count($userAnswer)==0)
                     disabled
                 @endif >إعادة</button>

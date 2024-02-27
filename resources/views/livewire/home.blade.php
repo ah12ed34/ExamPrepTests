@@ -2,7 +2,7 @@
     {{-- Close your eyes. Count to one. That is how long forever feels. --}}
     <div class="container">
         <div class="row">
-            <a class="btn btn-primary" href="{{ route('new-test') }}">Create Exam</a>
+            {{-- <a class="btn btn-primary" href="{{ route('new-test') }}">Create Exam</a> --}}
 
                     @forelse ($Exams as $Exam)
                     <div class="card">

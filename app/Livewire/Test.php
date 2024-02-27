@@ -100,6 +100,26 @@ class Test extends Component
         }
 
     }
+    public function goTo($number)
+    {
+        if ($number < 0 || $number >= count($this->questions)) {
+            return;
+        }
+        $this->number = $number;
+        $this->question = $this->questions[$this->number];
+        $this->saveUserAnswer();
+    }
+    public function prevNotAnswered()
+    {
+        $prev = $this->number;
+        do {
+            $prev--;
+            if ($prev < 0) {
+                $prev = count($this->questions) - 1;
+            }
+        } while (isset($this->userAnswer[$prev]));
+        $this->goTo($prev);
+    }
     public function updatedUserAnswer()
     {
         $this->saveUserAnswer();
@@ -139,7 +159,7 @@ class Test extends Component
             ];
         }, $this->userAnswer, array_keys($this->userAnswer)));
         $this->resetData();
-        return redirect()->route('home');
+        return redirect()->route('result', $Exam->id);
 
     }
 
