@@ -19,10 +19,10 @@ class CorrectAnswers extends Component
 
     public function mount(Exam $Exam)
     {
-        if (!$Exam->isExam()) {
-            return abort(404, 'This Exam is not found');
+        // if (!$Exam->isExam()) {
+        //     return abort(404, 'This Exam is not found');
 
-        }
+        // }
         if(session('resultId')==$Exam->id){
             $this->number = session('resultNumber', 0);
 
