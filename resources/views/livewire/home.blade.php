@@ -1,7 +1,7 @@
 <div>
     {{-- Close your eyes. Count to one. That is how long forever feels. --}}
     <div class="container">
-        <div class="row">
+        <div class="row" wire:ignore>
             {{-- <a class="btn btn-primary" href="{{ route('new-test') }}">Create Exam</a> --}}
 
                     @forelse ($Exams as $Exam)
@@ -14,6 +14,9 @@
                             <a href="{{ route('test', $Exam->id) }}" class="btn btn-primary">Start Test</a>
                             @if ($Exam->isExam())
                             <a  class="btn btn-primary" href="{{ route('result',$Exam->id) }}" >Show Result</a>
+                            @endif
+                            @if ($Exam->isOwner())
+                            <a  class="btn btn-primary" href="{{ route('edit-test',$Exam->id) }}" >Edit</a>
                             @endif
                         </div>
                     </div>

@@ -16,9 +16,12 @@ class Exam extends Model
     }
     public function answers()
     {
-        return $this->hasMany(Answer::class, 'exam_id', 'id')->where('user_id', auth()->id());
+        return $this->hasOne(Answer::class, 'exam_id', 'id')->where('user_id', auth()->id());
     }
     public function isExam() : bool{
-        return $this->answers->count() > 0;
+        return $this->answers()->exists();
+    }
+    public function isOwner() : bool{
+        return $this->user_id == auth()->id();
     }
 }

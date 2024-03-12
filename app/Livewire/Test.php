@@ -147,17 +147,56 @@ class Test extends Component
 
     public function save()
     {
+
         $Exam = Exam::find(session('Exam'));
+        $is_exists = false;
         if ($Exam->answers()->where('user_id', auth()->id())->exists()){
-            $Exam->answers()->where('user_id', auth()->id())->delete();
+            if(!Storage::exists($Exam->answers->file))
+            {
+                Storage::put($Exam->answers->file, (new \SimpleXMLElement('<answers></answers>'))->asXML());
+            }
+            $xml = simplexml_load_file(Storage::path($Exam->answers->file));
+            $is_exists = true;
+        }else{
+            $xml = new \SimpleXMLElement('<answers></answers>');
         }
-        $Exam->answers()->createMany(array_map(function ($answer, $question_id) {
-            return [
-                'question_id' => $question_id,
-                'answer' => $answer,
+
+        // $Exam->answers()->createMany(array_map(function ($answer, $question_id) {
+        //     return [
+        //         'question_id' => $question_id,
+        //         'answer' => $answer,
+        //         'user_id' => auth()->id()
+        //     ];
+        // }, $this->userAnswer, array_keys($this->userAnswer)));
+
+        unset($xml->answer);
+        foreach ($this->userAnswer as $question_id => $answer) {
+            $child = $xml->addChild('answer');
+            $child->addChild('question_id', $question_id);
+            $child->addChild('answer', $answer);
+        }
+
+        if ($is_exists){
+            $xml->asXML(Storage::path($Exam->answers->file));
+
+        }else{
+        $file = $xml->asXML();
+
+
+        do {
+            $hash = md5($file . time());
+        } while (Exam::where('file', 'public/answers/' . $hash . '.xml')->exists());
+
+        $path = 'public/answers/' . $hash . '.xml';
+
+        if (Storage::put($path, $file)) {
+            $Exam->answers()->create([
+                'file' => $path,
                 'user_id' => auth()->id()
-            ];
-        }, $this->userAnswer, array_keys($this->userAnswer)));
+            ]);
+        }
+        }
+
         $this->resetData();
         return redirect()->route('result', $Exam->id);
 

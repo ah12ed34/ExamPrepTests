@@ -8,7 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class Answer extends Model
 {
     use HasFactory;
-    protected $fillable = ['exam_id', 'question_id', 'answer', 'user_id'];
+    // protected $fillable = ['exam_id', 'question_id', 'answer', 'user_id'];
+    protected $fillable = ['exam_id', 'file', 'user_id'];
 
     public function Exam()
     {

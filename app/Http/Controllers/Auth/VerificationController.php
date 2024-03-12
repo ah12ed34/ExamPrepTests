@@ -3,7 +3,11 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\User;
 use Illuminate\Foundation\Auth\VerifiesEmails;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
+
 
 class VerificationController extends Controller
 {
@@ -38,4 +42,17 @@ class VerificationController extends Controller
         $this->middleware('signed')->only('verify');
         $this->middleware('throttle:6,1')->only('verify', 'resend');
     }
+
+    public function verify(Request $request)
+{
+    if (! Hash::check($request->code, User::find($request->id)->verification_code )) {
+        return back()->withErrors([
+            'code' => 'The code is invalid.',
+        ]);
+    }
+
+    User::find($request->id)->markEmailAsVerified();
+
+    return redirect()->route('home');
+}
 }

@@ -14,10 +14,10 @@ return new class extends Migration
         Schema::create('answers', function (Blueprint $table) {
             $table->id();
             $table->foreignId('exam_id')->constrained('exams');
-            $table->integer('question_id');
+            // $table->integer('question_id');
             $table->foreignId('user_id')->constrained('users');
-            $table->string('answer');
-            $table->unique(['exam_id', 'question_id', 'user_id']);
+            $table->string('file');//file
+            $table->unique(['exam_id' , 'user_id']);
             $table->timestamps();
         });
     }

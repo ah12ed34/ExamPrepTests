@@ -24,6 +24,9 @@ class ResultExam extends Component
             return abort(404, 'This Exam is not found');
 
         }
+        if(!Storage::exists($Exam->answers->file)){
+            return redirect()->route('test',$Exam);
+        }
         if(session('resultId')==$Exam->id){
             $this->number = session('resultNumber', 0);
 
@@ -39,9 +42,32 @@ class ResultExam extends Component
 
         $file = Storage::path($Exam->file);
         $xml = simplexml_load_file($file);
+
+        $xmlAnswer = simplexml_load_string(Storage::get($Exam->answers->first()->file));
         $y = 0;
         $currect = 0;
         $wrong = 0;
+
+        // foreach ($xml->children() as $child) {
+        //     $this->questions[$y]['text'] = $child->text->__tostring();
+        //     $options = [];
+        //     foreach ($child->options->children() as $option) {
+        //         if (isset($option['opt']))
+        //             $options[(string) $option['opt']] = $option->__tostring();
+        //         else
+        //             $options[] = $option->__tostring();
+        //     }
+        //     $this->questions[$y]['options'] = $options;
+        //     $this->questions[$y]['answer'] = $child->answer->__tostring();
+        //     $this->questions[$y]['userAnswer'] = $Exam->answers->where('question_id', $y)->first()->answer;
+        //     $this->questions[$y]['correct'] = $this->questions[$y]['answer'] == $this->questions[$y]['userAnswer'];
+        //     if ($this->questions[$y]['correct']) {
+        //         $currect++;
+        //     } else {
+        //         $wrong++;
+        //     }
+        //     $y++;
+        // }
 
         foreach ($xml->children() as $child) {
             $this->questions[$y]['text'] = $child->text->__tostring();
@@ -54,7 +80,9 @@ class ResultExam extends Component
             }
             $this->questions[$y]['options'] = $options;
             $this->questions[$y]['answer'] = $child->answer->__tostring();
-            $this->questions[$y]['userAnswer'] = $Exam->answers->where('question_id', $y)->first()->answer;
+            //  <?xml version="1.0"
+            //   <answers><answer><question_id>0</question_id><answer>B</answer></answer><answer><question_id>1</question_id><answer>B</answer></answer></answers>
+            $this->questions[$y]['userAnswer'] = $xmlAnswer->answer[$y]->answer->__tostring();
             $this->questions[$y]['correct'] = $this->questions[$y]['answer'] == $this->questions[$y]['userAnswer'];
             if ($this->questions[$y]['correct']) {
                 $currect++;
